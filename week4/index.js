@@ -1,9 +1,9 @@
-// creating todo using express
+// creating todo using express or middleware
 const express = require("express");
 const fs = require("fs");
 const app = express();
 const port = 3000;
-const todo = "./todo.json";
+const todo = './todo.json';
 
 
 app.use(express.json());
@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/todo", (req, res) => {
+app.post("/add-todo", (req, res) => {
   if (!req.body || !req.body.title || req.body.status == null) {
     return res.status(400).send("Please provide both title and status.");
   }
@@ -43,7 +43,7 @@ app.post("/todo", (req, res) => {
   res.send("New todo added successfully");
 });
 
-app.delete("/todo/:id", (req, res) => {
+app.delete("/delete-todo/:id", (req, res) => {
   let freshTodo = loadTodo();
   let pos = freshTodo.findIndex((item) => item.id == req.params.id);
   if (pos == -1) {
@@ -55,7 +55,7 @@ app.delete("/todo/:id", (req, res) => {
   }
 });
 
-app.put("/todo/:id", (req, res) => {
+app.put("/update-todo/:id", (req, res) => {
   let freshTodo = loadTodo();
   let pos = freshTodo.findIndex((item) => item.id == req.params.id);
   if (pos == -1) {
