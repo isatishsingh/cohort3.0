@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 
-app.use(errorMiddleware);
 let age = 15;
 let errorCount = 0;
 function errorMiddleware(req,res,next){
@@ -16,6 +15,8 @@ function errorMiddleware(req,res,next){
         res.status(404).send(`Thode se bade ho jao, total error count is ${errorCount}`);
     }
 }
+
+app.use(errorMiddleware);
 
 app.get('/simpleGet',(req,res)=>{
     res.status(200).send("get h0 gya");

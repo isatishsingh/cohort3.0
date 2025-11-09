@@ -1,47 +1,45 @@
-import express from "express";
+import { getReqCounter } from "../middlewares/requestCounter.js";
 
-const app = express();
+export function admin(req, res) {
+  res.json({
+    message: `Total number of request count is ${getReqCounter()}`,
+  });
+}
 
-app.get("/sum", (req, res) => {
+export function findSum(req, res) {
+  console.log(req.query.a);
+  console.log(req.name);
   let a = +req.query.a;
   let b = +req.query.b;
   let result = a + b;
   res.json({
     answer: result,
   });
-});
+}
 
-app.get("/sub/:a/:b", (req, res) => {
+export function findSub(req, res) {
   let a = parseInt(req.params.a);
   let b = parseInt(req.params.b);
   let result = a - b;
   res.json({
     answer: result,
   });
-});
+}
 
-app.get("/multiply", (req, res) => {
+export function findMultiply(req, res) {
   let a = +req.query.a;
   let b = +req.query.b;
   let result = a * b;
   res.json({
     answer: result,
   });
-});
+}
 
-app.get("/divide", (req, res) => {
+export function findDivide(req, res) {
   let a = +req.query.a;
   let b = +req.query.b;
-  if (b == 0) {
-    res.status(404).send(`b or denominator can not be 0 during division`);
-    return;
-  }
   let result = a / b;
   res.json({
     answer: result,
   });
-});
-
-app.listen(3000, () => {
-  console.log("Server is running on 3000");
-});
+}
