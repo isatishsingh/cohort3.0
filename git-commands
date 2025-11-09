@@ -1,0 +1,14 @@
+# git clone url -> this command is use to clone the repo
+# git pull -> this command is use to fetch the file from the remote repo
+# git status -> this command is used to see the current state of your working directory and staging area
+# git add file-name-> this command add the specific file in staging area
+# git add . -> is used to stage all changes in your current directory, including: Modified files,  Newly created files, Deleted files.
+# git commit -> this command is use to open the commit editor where we can write the defined commit message
+# git commit -m "message" -> this command is use to commit the file with the specific commit message.
+# git push -> this command is use to push the changes on the repo
+# git push origin branch-name -> this command push the changes in specific branch
+# git log --oneline -> this command is use to see your commit history.
+# git reset --hard HEAD~1 -> this command will Undo commit and discard all changes completely.
+# git reset --mixed HEAD~1 -> this command will Undo commit and unstage the changes (keep changes in files)
+# git reset --soft HEAD~1 -> this command will Undo the commit but keep the file changes.
+# git rm -r --cached file/directory-name -> If any file/directory was already committed before, you must remove it from the Git index
