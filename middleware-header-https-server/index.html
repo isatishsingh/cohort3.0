@@ -1,11 +1,80 @@
 <!DOCTYPE html>
 <html>
-  <title>This is for fetch request</title>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="fetch.js"></script> 
+  <head>
+    <title>This is for fetch request</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="pathGenerator.js"></script>
   </head>
   <body>
-    <div id="parentDiv">
+    <div>This form is for Registration</div>
+    <div id="registerFormDiv">
+      <form method="POST" onsubmit="register(event)">
+        <div>
+          <li>Enter your name</li>
+          <input type="text" id="name" />
+        </div>
+        <div>
+          <li>Enter your Email</li>
+          <input type="email" id="email" />
+        </div>
+        <div>
+          <li>Enter your Phone No.</li>
+          <input type="number" id="phoneNumber" />
+        </div>
+        <div>
+          <li>Enter your Password</li>
+          <input type="password" id="password" />
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+    <div><br /></div>
+
+    <div>Here you can see your specific user details through the email</div>
+    <div id="getFormDiv">
+      <form method="POST" onsubmit="getDetail(event)">
+        <div>
+          <li>Enter your Email</li>
+          <input type="email" id="getEmail" />
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+    <div><br /></div>
+
+    <div>This form is for update the name for specific user using email</div>
+    <div id="updateFormDiv">
+      <form method="POST" onsubmit="updateDetail(event)">
+        <div>
+          <li>Enter your name</li>
+          <input type="text" id="uName" />
+        </div>
+        <div>
+          <li>Enter your Email</li>
+          <input type="email" id="uEmail" />
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+    <div><br /></div>
+
+    <div>You can delete the data through the email</div>
+    <div id="deleteFormDiv">
+      <form method="POST" onsubmit="deleteData(event)">
+        <div>
+          <li>Enter your Email</li>
+          <input type="email" id="dEmail" />
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
     </div>
   </body>
 </html>

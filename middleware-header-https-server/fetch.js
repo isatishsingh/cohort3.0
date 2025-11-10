@@ -19,7 +19,6 @@
 
 async function updateDocument() {
   const response = await axios.get("https://jsonplaceholder.typicode.com/posts/1");
-  console.log(response.data);
   const h1 = document.createElement("h1");
   const h2 = document.createElement("h2");
   const p = document.createElement("p");

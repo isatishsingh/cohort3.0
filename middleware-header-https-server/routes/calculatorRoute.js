@@ -7,8 +7,6 @@ export function admin(req, res) {
 }
 
 export function findSum(req, res) {
-  console.log(req.query.a);
-  console.log(req.name);
   let a = +req.query.a;
   let b = +req.query.b;
   let result = a + b;
