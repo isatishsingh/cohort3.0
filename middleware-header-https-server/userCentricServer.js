@@ -14,7 +14,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-console.log("server is listening");
 app.post("/register", registerMiddleware, register);
 app.get("/getDetail", getDataMiddleware, getDetail);
 app.put("/updateDetail", updateDataMiddleware, updateDetail);
