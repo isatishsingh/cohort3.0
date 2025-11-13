@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./routes/route.js"></script>
+    <title>This is for user auth</title>
+  </head>
+  <body>
+    <div>
+      <h3>This form is for user signup</h3>
+      <form method="POST" onsubmit="signup(event)">
+        <label>Enter Your Name</label>
+        <input type="text" id="signupName" />
+        <label>Enter you password</label>
+        <input type="text" id="signupPassword" />
+        <button type="submit">Signup</button>
+      </form>
+      <br />
+      <br />
+      <br />
+      <h3>This form Is For Signin</h3>
+      <form method="post" onsubmit="signin(event)">
+        <label>Enter your name</label>
+        <input type="text" id="loginName" />
+        <label>Enter your password</label>
+        <input type="text" id="loginPassword" />
+        <button type="submit">Login</button>
+      </form>
+      <br />
+      <br />
+      <br />
+      <h3>
+        By clicking on this button it will fetch your data, you must have to
+        signin first
+      </h3>
+      <button onclick="fetchDetail(event)">Get Info</button>
+      <div id="responseDiv">
+        <h3>your userName is</h3>
+        <p id="fetchUserName"></p>
+        <h3>your password is </h3>
+        <p id="fetchPassword"></p>
+      </div>
+      <br/>
+      <br/>
+      <div id="responseDiv">
+        <button onclick="logout(event)">Logout</button>
+      </div>
+    </div>
+  </body>
+</html>
