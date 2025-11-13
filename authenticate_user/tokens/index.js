@@ -1,12 +1,17 @@
-const express = require("express");
-const { generateToken } = require("./simpleToken");
-const jwt = require('jsonwebtoken');
+import "./loadEnv.js";
+import express from "express";
+import jwt from "jsonwebtoken";
+import { generateToken } from "./tokenGenerator.js";
+import { checkUser } from "./middleware/auth.js";
 const app = express();
-const JWT_SECRET = "HELP_TO_IT_SECRET";
+
+const JWT_SECRET = process.env.JWT_SECRET;
+const PORT = process.env.PORT;
 
 app.use(express.json());
 
-const users = [];
+export const users = [];
+
 app.post("/signup", (req, res) => {
   const userName = req.body.userName;
   const password = req.body.password;
@@ -40,7 +45,7 @@ app.post("/signin", (req, res) => {
     // const token = generateToken(); // creating our own token
     // fetchedUser.token = token; // writing the token on object, old practice
 
-    const token = jwt.sign({userName : userName},JWT_SECRET); // using jwt
+    const token = jwt.sign({ userName: userName }, JWT_SECRET); // using jwt
     res.status(200).json({
       message: `login successfully and generated token is ${token}`,
     });
@@ -52,23 +57,20 @@ app.post("/signin", (req, res) => {
   console.log("26 =>", users);
 });
 
-app.get('/me', (req,res) =>{
-    const token = req.headers.token;
-    const decryptedInformation = jwt.verify(token, JWT_SECRET);
+app.get("/me", checkUser, (req, res) => {
+  const foundUser = users.find((user) => user.userName === req.userName);
 
-    const foundUser = users.find(user => user.userName === decryptedInformation.userName);
+  if (foundUser) {
+    res.status(200).json({
+      message: `Hii there you are inside /me endpoint`,
+    });
+  } else {
+    res.status(404).json({
+      message: `No data found found for this user`,
+    });
+  }
+});
 
-    if(foundUser){
-        res.status(200).json({
-            message : `welcome ${foundUser.userName} and your password is ${foundUser.password}`,
-        });
-    }else{
-        res.status(404).json({
-            message : `user not found`,
-        });
-    }
-})
-
-app.listen(3000, (err, res) => {
-  console.log(`server is running on PORT 3000`);
+app.listen(PORT, (err, res) => {
+  console.log(`server is running on PORT ${PORT}`);
 });
