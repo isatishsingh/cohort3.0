@@ -1,0 +1,45 @@
+[
+  {
+    "userName": "Sahil Pawar",
+    "todos": [
+      {
+        "todoValue": "Time pass",
+        "todoStatus": "false"
+      },
+      {
+        "todoValue": "go for walk",
+        "todoStatus": "false"
+      },
+      {
+        "todoValue": "Have a break fast",
+        "todoStatus": "false"
+      }
+    ]
+  },
+  {
+    "userName": "Satish Singh",
+    "todos": [
+      {
+        "todoValue": "Time pass",
+        "todoStatus": "false"
+      },
+      {
+        "todoValue": "go for walk",
+        "todoStatus": "false"
+      },
+      {
+        "todoValue": "Have a break fast",
+        "todoStatus": "True"
+      }
+    ]
+  },
+  {
+    "userName": "Swapnil Uikey",
+    "todos": [
+      {
+        "todoValue": "Time pass",
+        "todoStatus": "false"
+      }
+    ]
+  }
+]
