@@ -1,7 +1,9 @@
 import "../loadEnv.js";
+import bcrypt from "bcrypt";
 import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import z from "zod";
 import cors from "cors";
 import { userModel, todoModel } from "./db.js";
 import { auth } from "./middleware/auth.js";
@@ -10,7 +12,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const PORT = process.env.PORT;
 
 // connecting server
-console.log("ENV Test:", process.env.MONGO_DB_CONNECTION_STRING);
 mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING);
 const app = express();
 
@@ -18,20 +19,53 @@ app.use(express.json());
 app.use(cors());
 
 // user signup route
-app.post("/signup", isExist,  async (req, res) => {
+// we can add middleware or else our try catch will handle it
+app.post("/signup", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const name = req.body.name;
 
-  await userModel.create({
-    username: username,
-    password: password,
-    name: name,
+  // creating the object to validate the input fields
+  const requiredBody = z.object({
+    username: z.string().min(3).max(100).email(),
+    password: z.string().min(6).max(100),
+    name: z.string().min(3).max(100),
   });
 
-  res.status(200).json({
-    message: `User registered successfully`,
-  });
+  // checking the input field using validation
+  const parseWithSuccess = requiredBody.safeParse(req.body);
+
+  // throw an error if inputs are not valid
+  if (!parseWithSuccess.success) {
+    res.status(401).json({
+      message: `Invalid input format`,
+      error : parseWithSuccess.error
+    });
+    return;
+  }
+
+  let errorOccurred = false;
+  try {
+    // conversion of password in hash_password
+    const hashPassword = await bcrypt.hash(password, 5);
+
+    await userModel.create({
+      username: username,
+      password: hashPassword,
+      name: name,
+    });
+  } catch (error) {
+    res.status(403).json({
+      message: `user already exist`,
+    });
+    errorOccurred = true;
+  }
+
+  if (!errorOccurred) {
+    res.status(200).json({
+      message: `User registered successfully`,
+    });
+  }
 });
 
 // user login route
@@ -41,10 +75,19 @@ app.post("/login", async (req, res) => {
 
   const response = await userModel.findOne({
     username: username,
-    password: password,
   });
 
-  if (response) {
+  if (!response) {
+    res.status(403).json({
+      message: `User not exist`,
+    });
+  }
+
+  console.log(response);
+
+  const passwordMatch = await bcrypt.compare(password, response.password);
+
+  if (passwordMatch) {
     const token = jwt.sign({ id: response._id }, JWT_SECRET);
     res.status(200).json({
       token: `${token}`,
@@ -52,7 +95,7 @@ app.post("/login", async (req, res) => {
     });
   } else {
     res.status(403).json({
-      message: `No user found`,
+      message: `username and password are not matched`,
     });
   }
 });

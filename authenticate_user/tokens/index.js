@@ -1,4 +1,4 @@
-import "./loadEnv.js";
+import "../loadEnv.js";
 import express from "express";
 import jwt from "jsonwebtoken";
 import { generateToken } from "./tokenGenerator.js";
