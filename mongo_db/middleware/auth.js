@@ -6,7 +6,6 @@ export const auth = (req, res, next) => {
   const token = req.headers.token;
   
   const response = jwt.verify(token, JWT_SECRET);
-  console.log("6=>", response);
   
   if (response) {
     req.userId = response.id;

@@ -6,7 +6,7 @@ const Int32 = mongoose.Int32;
 // schema or structure of my database
 // user schema
 const users = new Schema({
-    username : String,
+    username : {type: String, unique : true},
     password : String,
     name : String,
 });

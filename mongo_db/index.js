@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 import { userModel, todoModel } from "./db.js";
 import { auth } from "./middleware/auth.js";
+import { isExist } from "./middleware/checkUserExist.js";
 const JWT_SECRET = "THIS_HELPS_TO_KEEP_IT_SECRET";
 
 // connecting server
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 
 // user signup route
-app.post("/signup", async (req, res) => {
+app.post("/signup", isExist,  async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const name = req.body.name;
@@ -41,7 +42,6 @@ app.post("/login", async (req, res) => {
     username: username,
     password: password,
   });
-  console.log(response);
 
   if (response) {
     const token = jwt.sign({ id: response._id }, JWT_SECRET);
@@ -80,10 +80,7 @@ app.post("/todo", auth, async (req, res) => {
 // fetch todo route
 app.get("/todos", auth, async (req, res) => {
   const userId = req.userId;
-  console.log("75=>", userId);
   const todoData = await todoModel.find({ userId });
-
-  console.log(todoData);
 
   if (todoData.length > 0) {
     return res.status(200).json({ all_todo: todoData });
