@@ -1,3 +1,4 @@
+import "../loadEnv.js";
 import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
@@ -5,12 +6,12 @@ import cors from "cors";
 import { userModel, todoModel } from "./db.js";
 import { auth } from "./middleware/auth.js";
 import { isExist } from "./middleware/checkUserExist.js";
-const JWT_SECRET = "THIS_HELPS_TO_KEEP_IT_SECRET";
+const JWT_SECRET = process.env.JWT_SECRET;
+const PORT = process.env.PORT;
 
 // connecting server
-mongoose.connect(
-  `mongodb+srv://zaplearn:wMtnEhmCj6O4k7EP@cluster0.qng6m3q.mongodb.net/todo-app-database`
-);
+console.log("ENV Test:", process.env.MONGO_DB_CONNECTION_STRING);
+mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING);
 const app = express();
 
 app.use(express.json());
@@ -92,6 +93,6 @@ app.get("/todos", auth, async (req, res) => {
 });
 
 // running server
-app.listen(3000, (err, res) => {
+app.listen(PORT, (err, res) => {
   console.log("Sever is running on PORT 3000");
 });

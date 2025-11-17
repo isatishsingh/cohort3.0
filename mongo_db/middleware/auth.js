@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-const JWT_SECRET = "THIS_HELPS_TO_KEEP_IT_SECRET";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // checking user authentication
 export const auth = (req, res, next) => {
