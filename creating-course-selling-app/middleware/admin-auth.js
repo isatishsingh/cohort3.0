@@ -1,6 +1,6 @@
 import z from "zod";
 import jwt from "jsonwebtoken";
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET_ADMIN;
 
 export const adminLoginAuth = async (req, res, next) => {
   try {

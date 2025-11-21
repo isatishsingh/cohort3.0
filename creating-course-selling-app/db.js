@@ -26,7 +26,7 @@ const COURSE_SCHEMA = new Schema({
 
 const PURCHASE_COURSE_SCHEMA = new Schema({
   userID: { type: objectId, required: true },
-  courseID: { type: objectId, required: true },
+  courseIDs: [{ type: objectId, required: true }],
 });
 
 export const user = mongoose.model("user", USER_SCHEMA);
