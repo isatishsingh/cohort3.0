@@ -12,7 +12,7 @@ const UserRouter = Router();
 
 // login route
 UserRouter.post("/login", checkLoginCred, async (req, res) => {
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const password = req.body.password;
 
   const response = await user.findOne({
@@ -46,7 +46,7 @@ UserRouter.post("/signup", checkCredential, async (req, res) => {
   try {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
-    const email = req.body.email;
+    const email = req.body.email.toLowerCase();
     const password = await bcrypt.hash(req.body.password, 5);
 
     await user.create({

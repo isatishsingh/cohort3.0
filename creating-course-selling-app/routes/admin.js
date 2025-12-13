@@ -17,7 +17,7 @@ AdminRouter.post("/admin-signup", checkCredential, async (req, res) => {
   try {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
-    const email = req.body.email;
+    const email = req.body.email.toLowerCase();
     const password = await bcrypt.hash(req.body.password, 5);
 
     await admin.create({
@@ -39,7 +39,7 @@ AdminRouter.post("/admin-signup", checkCredential, async (req, res) => {
 });
 
 AdminRouter.post("/admin-login", checkLoginCred, async (req, res) => {
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const password = req.body.password;
 
   const response = await admin.findOne({
@@ -89,12 +89,12 @@ AdminRouter.post(
       });
     } catch (error) {
       return res.status(401).json({
-        message: "course is not created successfully",
+        message: "Course creation failed",
       });
     }
 
     return res.status(200).json({
-      message: "new course created successfully",
+      message: "new course added successfully",
     });
   }
 );
@@ -108,9 +108,9 @@ AdminRouter.put(
       const { title, description, photourl, price } = req.body;
       const { courseID } = req.query;
       const fetchedCourse = await course.findById(courseID);
-      if (fetchedCourse.length === 0) {
+      if (fetchedCourse && fetchedCourse.length === 0) {
         return res.status(400).json({
-          message: `no course found please check courseID`,
+          message: `no course found please check courseID carefully`,
         });
       }
 
@@ -130,7 +130,7 @@ AdminRouter.put(
       await course.updateOne({ _id: courseID }, { $set: updateFields });
     } catch (error) {
       return res.status(400).json({
-        message: "course update unsuccessful",
+        message: "due to some error course cannot be updated",
       });
     }
 
@@ -148,15 +148,15 @@ AdminRouter.delete(
     try {
       const { courseID } = req.query;
       const fetchedCourse = await course.findById(courseID);
-      if (fetchedCourse.length === 0) {
+      if (!fetchedCourse) {
         return res.status(400).json({
-          message: `no course found please check courseID`,
+          message: `no course found, please check courseID carefully`,
         });
       }
 
       if (fetchedCourse.creatorID.toString() !== req.adminID.toString()) {
         return res.status(400).json({
-          message: `Sorry you don't have any access for this course`,
+          message: `Sorry you don't have delete access for this course`,
         });
       }
       await course.findByIdAndDelete(courseID);
@@ -166,7 +166,7 @@ AdminRouter.delete(
       });
     } catch (error) {
       return res.status(400).json({
-        message: "course deletion was unsuccessful",
+        message: "due to some error course cannot be deleted",
       });
     }
   }

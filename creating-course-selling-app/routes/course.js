@@ -28,10 +28,13 @@ CourseRouter.post(
     try {
       const userID = req.userID;
       const { courseID } = req.query;
+      // fetching all purchased courses of a user from purchase collection
       const courses = await purchase.findOne({ userID });
-      const alreadyPurchased = courses.courseIDs.find(
-        (item) => item.toString() === courseID.toString()
-      );
+      // checking if user has already have this course or not in his purchased list
+      const alreadyPurchased = courses && courses.courseIDs.length ? courses.courseIDs.find(
+              (item) => item.toString() === courseID.toString()
+            ): null;
+      
       if (alreadyPurchased) {
         return res.status(202).json({
           message:
@@ -51,7 +54,6 @@ CourseRouter.post(
         { $addToSet: { courseIDs: courseID } },
         { upsert: true }
       );
-
       res.status(200).json({
         message: "Congratulation You've successfully purchased this course",
       });
@@ -67,18 +69,25 @@ CourseRouter.get("/purchased-courses", clientLoginAuth, async (req, res) => {
   const userID = req.userID;
   const purchasedCourses = await purchase.findOne({ userID });
   if (!purchasedCourses || purchasedCourses.length == 0) {
-    return res.status(404).json({
+    return res.status(200).json({
       message: "no course found with this user id",
     });
   }
 
-  const courseIDs = purchasedCourses.courseIDs;
+  const { courseIDs } = purchasedCourses;
 
+  // this will fetch all the courses which are present in the
+  // course table whose ids are present in the courseIDs array in user purchase table
   const courses = await course.find({ _id: { $in: courseIDs } });
 
+  if(courseIDs.length && courses.length === 0){
+    return res.status(500).json({
+      message: "Internal server error, please try after sometime"
+    })
+  }
   if (!courses || courses.length == 0) {
     return res.status(200).json({
-      message: "there is some error from our server",
+      message: "This course is not available currently you can contact to admin",
     });
   }
 
