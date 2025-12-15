@@ -15,8 +15,7 @@ const AdminRouter = Router();
 
 AdminRouter.post("/admin-signup", checkCredential, async (req, res) => {
   try {
-    const firstname = req.body.firstname;
-    const lastname = req.body.lastname;
+    const { firstname, lastname } = req.body;
     const email = req.body.email.toLowerCase();
     const password = await bcrypt.hash(req.body.password, 5);
 

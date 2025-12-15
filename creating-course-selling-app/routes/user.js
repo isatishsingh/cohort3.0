@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const UserRouter = Router();
 
-// login route
+// login route user oriented
 UserRouter.post("/login", checkLoginCred, async (req, res) => {
   const email = req.body.email.toLowerCase();
   const password = req.body.password;
@@ -44,8 +44,7 @@ UserRouter.post("/login", checkLoginCred, async (req, res) => {
 // signup route
 UserRouter.post("/signup", checkCredential, async (req, res) => {
   try {
-    const firstname = req.body.firstname;
-    const lastname = req.body.lastname;
+    const { firstname, lastname } = req.body;
     const email = req.body.email.toLowerCase();
     const password = await bcrypt.hash(req.body.password, 5);
 
